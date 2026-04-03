@@ -204,11 +204,11 @@ while running:
         # Continuous shooting
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE]:
-            bullets = player.shoot()
-            for bullet in bullets:
+            bullet_list = player.shoot()
+            for bullet in bullet_list:
                 all_sprites.add(bullet)
-                self.bullets.add(bullet)
-            if bullets:
+                bullets.add(bullet)
+            if bullet_list:
                 laser_sound.play()
 
         # Spawn enemies
