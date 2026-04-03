@@ -8,10 +8,10 @@ pygame.init()
 pygame.mixer.init()
 
 # Load sounds
-laser_sound = pygame.mixer.Sound('assets/Bonus/sfx_laser1.ogg')
-zap_sound = pygame.mixer.Sound('assets/Bonus/sfx_zap.ogg')
-shield_up_sound = pygame.mixer.Sound('assets/Bonus/sfx_shieldUp.ogg')
-lose_sound = pygame.mixer.Sound('assets/Bonus/sfx_lose.ogg')
+laser_sound = pygame.mixer.Sound('shooter/assets/Bonus/sfx_laser1.ogg')
+zap_sound = pygame.mixer.Sound('shooter/assets/Bonus/sfx_zap.ogg')
+shield_up_sound = pygame.mixer.Sound('shooter/assets/Bonus/sfx_shieldUp.ogg')
+lose_sound = pygame.mixer.Sound('shooter/assets/Bonus/sfx_lose.ogg')
 
 # Constants
 SCREEN_WIDTH = 800
@@ -49,14 +49,14 @@ pygame.display.set_caption("Advanced Shooter Game")
 clock = pygame.time.Clock()
 
 # Create background
-background = pygame.image.load('assets/Backgrounds/darkPurple.png').convert()
+background = pygame.image.load('shooter/assets/Backgrounds/darkPurple.png').convert()
 background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Player class
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load('assets/PNG/playerShip1_blue.png').convert_alpha()
+        self.image = pygame.image.load('shooter/assets/PNG/playerShip1_blue.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (50, 50))
         self.rect = self.image.get_rect()
         self.rect.centerx = SCREEN_WIDTH // 2
@@ -88,7 +88,7 @@ class Player(pygame.sprite.Sprite):
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.image = pygame.image.load('assets/PNG/Lasers/laserBlue01.png').convert_alpha()
+        self.image = pygame.image.load('shooter/assets/PNG/Lasers/laserBlue01.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (5, 10))
         self.rect = self.image.get_rect()
         self.rect.centerx = x
@@ -105,9 +105,9 @@ class PowerUp(pygame.sprite.Sprite):
     def __init__(self, x, y, type):
         super().__init__()
         if type == 'health':
-            self.image = pygame.image.load('assets/PNG/Power-ups/powerupBlue.png').convert_alpha()
+            self.image = pygame.image.load('shooter/assets/PNG/Power-ups/powerupBlue.png').convert_alpha()
         elif type == 'speed':
-            self.image = pygame.image.load('assets/PNG/Power-ups/powerupGreen.png').convert_alpha()
+            self.image = pygame.image.load('shooter/assets/PNG/Power-ups/powerupGreen.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (20, 20))
         self.type = type
         self.rect = self.image.get_rect()
@@ -140,7 +140,7 @@ class Enemy(pygame.sprite.Sprite):
 class FastEnemy(Enemy):
     def __init__(self):
         super().__init__(5, RED, (30, 30))
-        self.image = pygame.image.load('assets/PNG/Enemies/enemyBlack1.png').convert_alpha()
+        self.image = pygame.image.load('shooter/assets/PNG/Enemies/enemyBlack1.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (30, 30))
         self.rect = self.image.get_rect()
         self.rect.x = random.randint(0, SCREEN_WIDTH - self.rect.width)
@@ -149,7 +149,7 @@ class FastEnemy(Enemy):
 class SlowEnemy(Enemy):
     def __init__(self):
         super().__init__(1, ORANGE, (50, 50), 2)
-        self.image = pygame.image.load('assets/PNG/Enemies/enemyBlack2.png').convert_alpha()
+        self.image = pygame.image.load('shooter/assets/PNG/Enemies/enemyBlack2.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (50, 50))
         self.rect = self.image.get_rect()
         self.rect.x = random.randint(0, SCREEN_WIDTH - self.rect.width)
@@ -158,7 +158,7 @@ class SlowEnemy(Enemy):
 class TankEnemy(Enemy):
     def __init__(self):
         super().__init__(1, GRAY, (60, 60), 3)
-        self.image = pygame.image.load('assets/PNG/Enemies/enemyBlack3.png').convert_alpha()
+        self.image = pygame.image.load('shooter/assets/PNG/Enemies/enemyBlack3.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (60, 60))
         self.rect = self.image.get_rect()
         self.rect.x = random.randint(0, SCREEN_WIDTH - self.rect.width)
