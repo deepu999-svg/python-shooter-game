@@ -65,6 +65,7 @@ class Player(pygame.sprite.Sprite):
         self.health = 100
         self.last_shot = 0
         self.shoot_cooldown = 300  # ms
+        self.multishot = False
 
     def update(self):
         keys = pygame.key.get_pressed()
@@ -81,8 +82,12 @@ class Player(pygame.sprite.Sprite):
         now = pygame.time.get_ticks()
         if now - self.last_shot > self.shoot_cooldown:
             self.last_shot = now
-            return Bullet(self.rect.centerx, self.rect.top)
-        return None
+            bullets = [Bullet(self.rect.centerx, self.rect.top)]
+            if self.multishot:
+                bullets.append(Bullet(self.rect.centerx - 15, self.rect.top + 5))
+                bullets.append(Bullet(self.rect.centerx + 15, self.rect.top + 5))
+            return bullets
+        return []
 
 # Bullet class
 class Bullet(pygame.sprite.Sprite):
@@ -108,6 +113,8 @@ class PowerUp(pygame.sprite.Sprite):
             self.image = pygame.image.load('shooter/assets/PNG/Power-ups/powerupBlue.png').convert_alpha()
         elif type == 'speed':
             self.image = pygame.image.load('shooter/assets/PNG/Power-ups/powerupGreen.png').convert_alpha()
+        elif type == 'multishot':
+            self.image = pygame.image.load('shooter/assets/PNG/Power-ups/powerupRed.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (20, 20))
         self.type = type
         self.rect = self.image.get_rect()
@@ -176,7 +183,8 @@ all_sprites.add(player)
 # Game variables
 score = 0
 level = 1
-spawn_rate = 2  # percentage
+spawn_rate = 1  # percentage, reduced
+max_enemies = 8  # limit enemies on screen
 game_over = False
 
 # Game loop
@@ -196,14 +204,15 @@ while running:
         # Continuous shooting
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE]:
-            bullet = player.shoot()
-            if bullet:
+            bullets = player.shoot()
+            for bullet in bullets:
                 all_sprites.add(bullet)
-                bullets.add(bullet)
+                self.bullets.add(bullet)
+            if bullets:
                 laser_sound.play()
 
         # Spawn enemies
-        if random.randint(0, 100) < spawn_rate:
+        if random.randint(0, 100) < spawn_rate and len(enemies) < max_enemies:
             enemy_type = random.choice([FastEnemy, SlowEnemy, TankEnemy])
             enemy = enemy_type()
             all_sprites.add(enemy)
@@ -219,7 +228,7 @@ while running:
                     score += 10 * level
                     zap_sound.play()
                     if random.random() < 0.3:
-                        powerup_type = random.choice(['health', 'speed'])
+                        powerup_type = random.choice(['health', 'speed', 'multishot'])
                         powerup = PowerUp(enemy.rect.centerx, enemy.rect.centery, powerup_type)
                         all_sprites.add(powerup)
                         powerups.add(powerup)
@@ -242,11 +251,20 @@ while running:
             elif powerup.type == 'speed':
                 player.speed = min(10, player.speed + 1)
                 shield_up_sound.play()
+            elif powerup.type == 'multishot':
+                player.multishot = True
+                shield_up_sound.play()
 
         # Level up
         if score > level * 100:
             level += 1
-            spawn_rate = min(10, spawn_rate + 1)
+            spawn_rate = min(5, spawn_rate + 0.5)  # slower increase
+            max_enemies = min(15, max_enemies + 2)  # increase max enemies
+            # Clear enemies for fresh start
+            for enemy in enemies:
+                enemy.kill()
+            for powerup in powerups:
+                powerup.kill()
 
     else:
         # Game over screen
@@ -264,7 +282,8 @@ while running:
                     all_sprites.add(player)
                     score = 0
                     level = 1
-                    spawn_rate = 2
+                    spawn_rate = 1
+                    max_enemies = 8
                     game_over = False
                 elif event.key == pygame.K_q:
                     running = False

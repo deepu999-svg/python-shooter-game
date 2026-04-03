@@ -6,10 +6,11 @@ A Python-based desktop game built with Pygame to demonstrate advanced coding ski
 
 - Player-controlled spaceship with 4-directional movement and shooting cooldown
 - Multiple enemy types: Fast, Slow (tougher), Tank (very tough)
-- Power-ups: Health boosts and speed increases
-- Scoring system with level progression
-- High score persistence
+- Power-ups: Health boosts, speed increases, and multi-shot (triple bullets)
+- Scoring system with level progression (fresh start each level)
+- Limited enemies on screen (8-15 based on level)
 - Collision detection and health system
+- High score persistence
 - Game over screen with restart option
 - Smooth 60 FPS gameplay
 
