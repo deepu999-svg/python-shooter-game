@@ -256,7 +256,7 @@ while running:
                 shield_up_sound.play()
 
         # Level up
-        if score > level * 100:
+        if score > (level ** 2) * 100:
             level += 1
             spawn_rate = min(5, spawn_rate + 0.5)  # slower increase
             max_enemies = min(15, max_enemies + 2)  # increase max enemies
