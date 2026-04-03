@@ -69,13 +69,13 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT] and self.rect.left > 0:
+        if keys[pygame.K_a] and self.rect.left > 0:
             self.rect.x -= self.speed
-        if keys[pygame.K_RIGHT] and self.rect.right < SCREEN_WIDTH:
+        if keys[pygame.K_d] and self.rect.right < SCREEN_WIDTH:
             self.rect.x += self.speed
-        if keys[pygame.K_UP] and self.rect.top > 0:
+        if keys[pygame.K_w] and self.rect.top > 0:
             self.rect.y -= self.speed
-        if keys[pygame.K_DOWN] and self.rect.bottom < SCREEN_HEIGHT:
+        if keys[pygame.K_s] and self.rect.bottom < SCREEN_HEIGHT:
             self.rect.y += self.speed
 
     def shoot(self):

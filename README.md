@@ -38,7 +38,7 @@ The game uses free assets from [Kenney's Space Shooter Redux pack](https://openg
 
 ## Controls
 
-- Arrow keys: Move
+- WASD: Move (W: up, A: left, S: down, D: right)
 - Spacebar: Shoot (hold for continuous fire)
 
 ## Game Mechanics
